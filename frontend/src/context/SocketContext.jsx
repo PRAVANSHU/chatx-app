@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const newSocket = io("http://localhost:5000", {
+      const newSocket = io("https://chatx-app.onrender.com/", {
         query: { userId: authUser._id },
         reconnection: true,
         reconnectionAttempts: 5,
