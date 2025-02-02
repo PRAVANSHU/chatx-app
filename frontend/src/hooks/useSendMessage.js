@@ -1,0 +1,41 @@
+import React, { useState } from 'react';
+import useConversation from '../zustand/useConversation';
+import toast from "react-hot-toast";
+
+const useSendMessage = () => {
+  const [loading, setLoading] = useState(false);
+  const { messages, setMessages, selectedConversation } = useConversation();
+
+  const sendMessage = async (message) => {
+    if (!selectedConversation?._id) {
+      toast.error("No conversation selected.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Fixed the issue with incorrect URL template literal
+      const res = await fetch(`/api/messages/send/${selectedConversation._id}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      // Append the new message to the conversation
+      setMessages([...messages, data]);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { sendMessage, loading };
+};
+
+export default useSendMessage;
