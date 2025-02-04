@@ -33,22 +33,23 @@ const SignUp = () => {
         </h1>
 
         <form onSubmit={handleSubmit}>
-          {["fullName", "username", "password", "confirmPassword"].map((field) => (
-            <div key={field}>
-              <label className="label p-2">
-                <span className="text-base label-text">
-                  {field.charAt(0).toUpperCase() + field.slice(1)}
-                </span>
-              </label>
-              <input
-                type={field.includes("password") ? "password" : "text"}
-                placeholder={`Enter ${field}`}
-                className="w-full input input-bordered h-10"
-                value={inputs[field]}
-                onChange={(e) => setInputs({ ...inputs, [field]: e.target.value })}
-              />
-            </div>
-          ))}
+        {["fullName", "username", "password", "confirmPassword"].map((field) => (
+  <div key={field}>
+    <label className="label p-2">
+      <span className="text-base label-text">
+        {field.charAt(0).toUpperCase() + field.slice(1)}
+      </span>
+    </label>
+    <input
+      type={field === "password" || field === "confirmPassword" ? "password" : "text"}
+      placeholder={`Enter ${field}`}
+      className="w-full input input-bordered h-10"
+      value={inputs[field]}
+      onChange={(e) => setInputs({ ...inputs, [field]: e.target.value })}
+    />
+  </div>
+))}
+
 
           <GenderCheckbox onCheckboxChange={handleCheckBoxChange} selectedGender={inputs.gender} />
 
